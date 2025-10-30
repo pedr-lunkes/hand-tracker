@@ -3,9 +3,6 @@ visualizer_3d.py
 
 A subscriber that visualizes orientation data as a 3D cube
 using Pygame and PyOpenGL.
-
-Requires:
-  pip install pygame PyOpenGL PyOpenGL_accelerate
 """
 
 import pygame
@@ -15,16 +12,17 @@ from OpenGL.GLU import *
 import numpy as np
 import threading
 import math
+from orientation_mediator import Mediator # <-- CHANGED
 
 class CubeVisualizer:
     """
-    Subscribes to the OrientationMediator and displays the
+    Subscribes to the Mediator for "orientation" data and displays the
     orientation as a rotating 3D cube.
     """
     
-    def __init__(self, mediator):
+    def __init__(self, mediator: Mediator): # <-- CHANGED
         self.mediator = mediator
-        self.mediator.subscribe(self.update_orientation)
+        self.mediator.subscribe("orientation", self.update_orientation) # <-- CHANGED
         
         # Quaternion [qx, qy, qz, qw]
         self.orientation = [0.0, 0.0, 0.0, 1.0]
@@ -33,7 +31,7 @@ class CubeVisualizer:
         self.width = 800
         self.height = 600
         
-        # Cube vertex and edge definitions
+        # ... (rest of the file is identical) ...
         self.vertices = (
             (1, -1, -1), (1, 1, -1), (-1, 1, -1), (-1, -1, -1),
             (1, -1, 1), (1, 1, 1), (-1, -1, 1), (-1, 1, 1)
@@ -62,34 +60,14 @@ class CubeVisualizer:
         """
         qx, qy, qz, qw = q
         
-        # Pre-calculate for efficiency
-        qx2 = qx * qx
-        qy2 = qy * qy
-        qz2 = qz * qz
-        qxy = qx * qy
-        qxz = qx * qz
-        qyz = qy * qz
-        qwx = qw * qx
-        qwy = qw * qy
-        qwz = qw * qz
+        qx2 = qx * qx; qy2 = qy * qy; qz2 = qz * qz
+        qxy = qx * qy; qxz = qx * qz; qyz = qy * qz
+        qwx = qw * qx; qwy = qw * qy; qwz = qw * qz
         
-        # OpenGL matrix is column-major
         matrix = [
-            1.0 - 2.0 * (qy2 + qz2),
-            2.0 * (qxy + qwz),
-            2.0 * (qxz - qwy),
-            0.0,
-            
-            2.0 * (qxy - qwz),
-            1.0 - 2.0 * (qx2 + qz2),
-            2.0 * (qyz + qwx),
-            0.0,
-            
-            2.0 * (qxz + qwy),
-            2.0 * (qyz - qwx),
-            1.0 - 2.0 * (qx2 + qy2),
-            0.0,
-            
+            1.0 - 2.0 * (qy2 + qz2), 2.0 * (qxy + qwz), 2.0 * (qxz - qwy), 0.0,
+            2.0 * (qxy - qwz), 1.0 - 2.0 * (qx2 + qz2), 2.0 * (qyz + qwx), 0.0,
+            2.0 * (qxz + qwy), 2.0 * (qyz - qwx), 1.0 - 2.0 * (qx2 + qy2), 0.0,
             0.0, 0.0, 0.0, 1.0
         ]
         return matrix
@@ -107,25 +85,15 @@ class CubeVisualizer:
         
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
-        # Move camera back to see the cube
         glTranslatef(0.0, 0.0, -7.0) 
 
     def _draw_axes(self):
         """Draws X (Red), Y (Green), Z (Blue) axes."""
         glLineWidth(2.0)
         glBegin(GL_LINES)
-        # X Axis (Red)
-        glColor3f(1.0, 0.0, 0.0)
-        glVertex3f(0.0, 0.0, 0.0)
-        glVertex3f(2.0, 0.0, 0.0)
-        # Y Axis (Green)
-        glColor3f(0.0, 1.0, 0.0)
-        glVertex3f(0.0, 0.0, 0.0)
-        glVertex3f(0.0, 2.0, 0.0)
-        # Z Axis (Blue)
-        glColor3f(0.0, 0.0, 1.0)
-        glVertex3f(0.0, 0.0, 0.0)
-        glVertex3f(0.0, 0.0, 2.0)
+        glColor3f(1.0, 0.0, 0.0); glVertex3f(0.0, 0.0, 0.0); glVertex3f(2.0, 0.0, 0.0)
+        glColor3f(0.0, 1.0, 0.0); glVertex3f(0.0, 0.0, 0.0); glVertex3f(0.0, 2.0, 0.0)
+        glColor3f(0.0, 0.0, 1.0); glVertex3f(0.0, 0.0, 0.0); glVertex3f(0.0, 0.0, 2.0)
         glEnd()
 
     def _draw_cube(self):
@@ -137,7 +105,6 @@ class CubeVisualizer:
                 glVertex3fv(self.vertices[vertex_index])
         glEnd()
         
-        # Draw edges for clarity
         glColor3f(1.0, 1.0, 1.0)
         glLineWidth(2.0)
         glBegin(GL_LINES)
@@ -160,24 +127,15 @@ class CubeVisualizer:
                     if event.key == pygame.K_ESCAPE:
                         running = False
                         
-            # --- Get the latest orientation ---
             with self.orientation_lock:
-                # Convert quaternion to a 4x4 rotation matrix
                 rotation_matrix = self._quaternion_to_opengl_matrix(self.orientation)
             
-            # --- Render ---
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-            
-            glPushMatrix() # Start a new matrix stack for the cube
-            
-            # Apply the rotation from the sensor
+            glPushMatrix()
             glMultMatrixf(rotation_matrix)
-            
-            # Draw the cube and its axes
             self._draw_cube()
             self._draw_axes()
-            
-            glPopMatrix() # Restore the matrix stack
+            glPopMatrix()
             
             pygame.display.flip()
             pygame.time.wait(10)

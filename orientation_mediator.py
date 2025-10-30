@@ -2,45 +2,59 @@
 orientation_mediator.py
 
 Implements a thread-safe publish/subscribe mediator class.
-This allows the EKF estimator to publish its data to one or
-more subscribers (e.g., a visualizer, a logger) without
-being directly coupled to them.
+This allows different components (handlers, estimators, visualizers)
+to communicate without being directly coupled.
 """
 
 import threading
 
-class OrientationMediator:
+class Mediator:
     """
-    A thread-safe Pub/Sub class for distributing orientation data.
+    A thread-safe Pub/Sub class for distributing data via topics.
     """
     def __init__(self):
-        self._subscribers = []
+        self._topics = {}
         self._lock = threading.Lock()
+        print("Mediator: System initialized.")
 
-    def subscribe(self, callback):
+    def subscribe(self, topic, callback):
         """
-        Adds a new subscriber (a callback function) to the list.
+        Adds a new subscriber (a callback function) to a topic.
         
         Args:
-            callback (function): A function that takes one argument,
-                                 the OrientationData object.
+            topic (str): The name of the topic (e.g., "sensor", "orientation").
+            callback (function): A function that takes one argument (the data).
         """
         with self._lock:
-            if callback not in self._subscribers:
-                self._subscribers.append(callback)
-        print(f"Mediator: New subscriber added: {callback.__name__}")
+            if topic not in self._topics:
+                self._topics[topic] = []
+                
+            if callback not in self._topics[topic]:
+                self._topics[topic].append(callback)
+                
+        print(f"Mediator: New subscriber to '{topic}': {callback.__name__}")
 
-    def publish(self, data):
+    def publish(self, topic, data):
         """
-        Publishes data to all registered subscribers.
+        Publishes data to all subscribers of a specific topic.
         
         Args:
-            data (OrientationData): The data object to send.
+            topic (str): The topic to publish to.
+            data: The data object to send.
         """
+        subscribers_to_notify = []
         with self._lock:
-            for callback in self._subscribers:
-                try:
-                    callback(data)
-                except Exception as e:
-                    # Don't let one bad subscriber stop the others
-                    print(f"Error in subscriber {callback.__name__}: {e}")
+            if topic in self._topics:
+                # Make a copy to avoid holding the lock during callbacks
+                subscribers_to_notify = self._topics[topic][:]
+
+        if not subscribers_to_notify:
+            # print(f"Mediator: No subscribers for topic '{topic}'")
+            return
+
+        for callback in subscribers_to_notify:
+            try:
+                callback(data)
+            except Exception as e:
+                # Don't let one bad subscriber stop the others
+                print(f"Error in subscriber {callback.__name__} for topic '{topic}': {e}")

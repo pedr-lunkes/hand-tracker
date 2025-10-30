@@ -2,20 +2,12 @@
 main.py
 
 Main entry point for the orientation tracking application.
-
-This script does the following:
-1. Sets the desired data source (BLE or SERIAL).
-2. Initializes the chosen data handler.
-3. Creates the central Pub/Sub mediator.
-4. Injects the handler and mediator into the EKF estimator.
-5. Initializes subscribers (Visualizer, Plotter).
-6. Starts all threads and manages application lifecycle.
 """
 
 import threading
 import time
 import sys
-from orientation_mediator import OrientationMediator
+from orientation_mediator import Mediator
 from orientation_estimator import EkfEstimator
 from data_visulalization.visualizer_3d import CubeVisualizer
 from data_visulalization.ekf_plotter import GaussianPlotter
@@ -40,44 +32,45 @@ BAUDRATE = 115200
 def main():
     print("Starting orientation application...")
     
+    # 1. Create the central mediator
+    mediator = Mediator()
+    
     handler = None
     
-    # 1. Initialize the chosen data handler
+    # 2. Initialize the chosen data handler (and pass it the mediator)
     if DATA_SOURCE == "BLE":
         print(f"Using BLE data source. Connecting to '{BLE_DEVICE_NAME}'...")
-        handler = BleDataHandler(BLE_DEVICE_NAME)
+        handler = BleDataHandler(BLE_DEVICE_NAME, mediator)
     elif DATA_SOURCE == "SERIAL":
         print(f"Using Serial data source on {SERIAL_PORT}...")
-        handler = MpuSerialHandler(SERIAL_PORT, BAUDRATE)
+        handler = MpuSerialHandler(SERIAL_PORT, BAUDRATE, mediator)
     else:
         print(f"Error: Unknown DATA_SOURCE '{DATA_SOURCE}'")
         sys.exit(1)
 
-    # 2. Start the handler (it will connect in its own thread/way)
+    # 3. Start the handler's thread (it will connect and start publishing to "sensor")
     handler.start()
 
-    # 3. Create the mediator
-    mediator = OrientationMediator()
+    # 4. Initialize the EKF estimator
+    #    It subscribes to "sensor" and publishes to "orientation"
+    estimator = EkfEstimator(mediator)
 
-    # 4. Initialize the publisher (estimator)
-    #    Inject the handler and mediator
-    estimator = EkfEstimator(handler, mediator)
-
-    # 5. Initialize the subscribers
-    visualizer = CubeVisualizer(mediator)
+    # 5. Initialize subscribers
+    # This plotter subscribes to "orientation"
     plotter = GaussianPlotter(mediator)
 
-    # 6. Start the estimator in a background thread
-    print("Starting EKF estimator thread...")
-    estimator_thread = threading.Thread(target=estimator.run, daemon=True)
-    estimator_thread.start()
-
-    # 7. Start the 3D visualizer in a background thread
-    print("Starting 3D visualizer thread...")
+    # 6b. Initialize the original Orientation-Only Visualizer
+    #     It subscribes to "orientation"
+    visualizer = CubeVisualizer(mediator)
+    
+    print("Starting 3D orientation visualizer thread...")
     visualizer_thread = threading.Thread(target=visualizer.run, daemon=True)
+
+    # 8. Start the chosen visualizer thread
     visualizer_thread.start()
 
-    # 8. Run the plotter in the main thread
+    # 9. Run the plotter in the main thread
+    #    This blocks the main thread until the plot window is closed.
     print("Starting real-time plotter... (Close plot window to exit)")
     try:
         plotter.run()
@@ -86,21 +79,15 @@ def main():
     except Exception as e:
         print(f"Plotter closed due to an error: {e}")
     finally:
-        # 9. Clean up
+        # 10. Clean up
         print("Plotter window closed, stopping all threads...")
         
-        # Stop the estimator loop
-        estimator.stop()
-        
-        # Stop the data handler (disconnects BLE/Serial)
+        # Stop the data handler (disconnects BLE/Serial and stops its thread)
         handler.stop()
         
-        # Wait for the thread to finish cleaning up
-        estimator_thread.join(timeout=2.0)
-        
+        # Visualizer thread is daemon, will exit.
         print("Application shut down.")
 
 
 if __name__ == "__main__":
     main()
-
