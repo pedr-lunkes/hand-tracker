@@ -66,8 +66,8 @@ class EkfEstimator:
         var_accel = 0.005
         self.R = np.eye(3) * var_accel
         
-        self.var_gyro = 0.001
-        self.var_bias = 0.0001
+        self.var_gyro = 0.005
+        self.var_bias = 0.0005
         
         self.Q_noise = np.diag([
             self.var_gyro, self.var_gyro, self.var_gyro,

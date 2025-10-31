@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
 import threading
-from orientation_mediator import Mediator # <-- CHANGED
+from orientation_mediator import Mediator 
 
 class GaussianPlotter:
     """
@@ -17,9 +17,9 @@ class GaussianPlotter:
     probability density function (PDF) for each quaternion component.
     """
 
-    def __init__(self, mediator: Mediator): # <-- CHANGED
+    def __init__(self, mediator: Mediator):
         self.mediator = mediator
-        self.mediator.subscribe("orientation", self.update_data) # <-- CHANGED
+        self.mediator.subscribe("orientation", self.update_data)
         
         self.latest_data = None
         self.lock = threading.Lock()
@@ -28,7 +28,6 @@ class GaussianPlotter:
         self.fig, self.axs = plt.subplots(2, 2, figsize=(12, 8))
         self.fig.suptitle('Real-Time EKF Quaternion Distributions', fontsize=16)
         
-        # ... (rest of the file is identical) ...
         self.x_range = np.linspace(-1.2, 1.2, 300)
         
         titles = ['q_x Distribution', 'q_y Distribution', 'q_z Distribution', 'q_w Distribution']

@@ -12,7 +12,7 @@ from OpenGL.GLU import *
 import numpy as np
 import threading
 import math
-from orientation_mediator import Mediator # <-- CHANGED
+from orientation_mediator import Mediator
 
 class CubeVisualizer:
     """
@@ -20,9 +20,9 @@ class CubeVisualizer:
     orientation as a rotating 3D cube.
     """
     
-    def __init__(self, mediator: Mediator): # <-- CHANGED
+    def __init__(self, mediator: Mediator):
         self.mediator = mediator
-        self.mediator.subscribe("orientation", self.update_orientation) # <-- CHANGED
+        self.mediator.subscribe("orientation", self.update_orientation)
         
         # Quaternion [qx, qy, qz, qw]
         self.orientation = [0.0, 0.0, 0.0, 1.0]
@@ -31,7 +31,6 @@ class CubeVisualizer:
         self.width = 800
         self.height = 600
         
-        # ... (rest of the file is identical) ...
         self.vertices = (
             (1, -1, -1), (1, 1, -1), (-1, 1, -1), (-1, -1, -1),
             (1, -1, 1), (1, 1, 1), (-1, -1, 1), (-1, 1, 1)
