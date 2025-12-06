@@ -21,7 +21,7 @@ Certifique-se de ter o **Python 3.8+** instalado.
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
+    git clone https://github.com/pedr-lunkes/hand-tracker.git
     cd seu-repositorio
     ```
 
