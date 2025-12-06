@@ -10,7 +10,7 @@ class MpuData:
     A simple data container class to hold accelerometer and gyroscope
     readings from the MPU6050 sensor.
     """
-    def __init__(self, ax, ay, az, gx, gy, gz):
+    def __init__(self, ax, ay, az, gx, gy, gz, mx, my, mz):
         """
         Initializes the MpuData object with the raw sensor values.
 
@@ -21,6 +21,9 @@ class MpuData:
             gx (float): Gyroscope reading along the X-axis (in degrees/sec)
             gy (float): Gyroscope reading along the Y-axis (in degrees/sec)
             gz (float): Gyroscope reading along the Z-axis (in degrees/sec)
+            mx (float): Magnetometer reading along the X-axis (in microteslas)
+            my (float): Magnetometer reading along the Y-axis (in microteslas)
+            mz (float): Magnetometer reading along the Z-axis (in microteslas)
         """
         self.ax = ax
         self.ay = ay
@@ -28,10 +31,15 @@ class MpuData:
         self.gx = gx
         self.gy = gy
         self.gz = gz
+        self.mx = mx
+        self.my = my
+        self.mz = mz
+        
 
     def __str__(self):
         """
         Returns a string representation of the MpuData object for easy printing.
         """
         return (f"Accel (g): [x: {self.ax:+.4f}, y: {self.ay:+.4f}, z: {self.az:+.4f}] | "
-                f"Gyro (dps): [x: {self.gx:+.4f}, y: {self.gy:+.4f}, z: {self.gz:+.4f}]")
+            f"Gyro (dps): [x: {self.gx:+.4f}, y: {self.gy:+.4f}, z: {self.gz:+.4f}] | "
+            f"Mag (µT): [x: {self.mx:+.4f}, y: {self.my:+.4f}, z: {self.mz:+.4f}]")

@@ -1,5 +1,5 @@
 """
-orientation_mediator.py
+mediator.py
 
 Implements a thread-safe publish/subscribe mediator class.
 This allows different components (handlers, estimators, visualizers)
@@ -48,13 +48,9 @@ class Mediator:
                 # Make a copy to avoid holding the lock during callbacks
                 subscribers_to_notify = self._topics[topic][:]
 
-        if not subscribers_to_notify:
-            # print(f"Mediator: No subscribers for topic '{topic}'")
-            return
-
         for callback in subscribers_to_notify:
             try:
                 callback(data)
             except Exception as e:
-                # Don't let one bad subscriber stop the others
+                # Don't let one bad subscriber stop the others >:(
                 print(f"Error in subscriber {callback.__name__} for topic '{topic}': {e}")

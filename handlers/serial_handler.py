@@ -9,7 +9,7 @@ import serial
 import time
 import threading
 from handlers.mpu_data import MpuData
-from orientation_mediator import Mediator
+from mediator import Mediator
 
 class MpuSerialHandler:
     """
@@ -71,17 +71,14 @@ class MpuSerialHandler:
                     continue # Timeout
 
                 parts = line.split(' ')
-                if len(parts) == 6:
-                    ax, ay, az, gx, gy, gz = map(float, parts)
-                    mpu_data = MpuData(ax, ay, az, gx, gy, gz)
+                if len(parts) == 9:
+                    ax, ay, az, gx, gy, gz, mx, my, mz = map(float, parts)
+                    mpu_data = MpuData(ax, ay, az, gx, gy, gz, mx, my, mz)
                     # Publish to the mediator
                     self.mediator.publish("sensor", mpu_data)
                 
             except serial.SerialException:
                 print("Serial port disconnected. Stopping thread.")
                 self._running = False
-            except Exception as e:
-                # print(f"Serial Read Error: {e}, Line: '{line}'")
-                pass # Ignore parse errors
         
         print("Serial read thread finished.")

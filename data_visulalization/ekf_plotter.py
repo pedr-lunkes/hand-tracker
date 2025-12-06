@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
 import threading
-from orientation_mediator import Mediator 
+from mediator import Mediator 
 
 class GaussianPlotter:
     """
@@ -91,7 +91,6 @@ class GaussianPlotter:
     def run(self):
         """
         Starts the matplotlib animation.
-        This function will block until the plot window is closed.
         """
         ani = animation.FuncAnimation(self.fig, self._animate, 
                                       interval=50, blit=True)
