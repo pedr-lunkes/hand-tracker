@@ -5,8 +5,9 @@ Este projeto implementa um sistema **AHRS (Attitude and Heading Reference System
 O projeto inclui visualização 3D em tempo real e suporta múltiplas fontes de entrada de dados (Serial, BLE e Simulação por Teclado).
 
 ## 📷 Demonstração
-![Demonstração BLE](documentation/demonstracaoBLE.mp4)
-
+<video src="documentation/demonstracaoBLE.mp4" controls="controls" style="max-width: 100%;">
+</video>
+c
 ## 🚀 Funcionalidades
 
 * **Fusão de Sensores (Sensor Fusion):** Implementação de um EKF para fundir dados brutos e corrigir o *drift* do giroscópio usando acelerômetro e magnetômetro.
