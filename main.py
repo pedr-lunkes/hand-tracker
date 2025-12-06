@@ -19,7 +19,7 @@ from handlers.keyboard_handler import KeyboardHandler
 
 # --- CONFIGURATION ---
 # Options: "BLE", "SERIAL", "KEYBOARD"
-DATA_SOURCE = "BLE"
+DATA_SOURCE = "KEYBOARD"
 
 # BLE Settings
 BLE_DEVICE_NAME = "HandTracker-MPU" 
@@ -64,7 +64,7 @@ def main():
     # This is where the all the calculations for orientation and position estimation will be made
     # You must create a .yaml with the parameters fit for your sensor, in order to get the best results :D
     # The results are published in the "orientation" topic
-    estimator = EkfEstimator(mediator, config_path="ekf_config_real.yaml")
+    estimator = EkfEstimator(mediator, config_path="ekf_config_keyboard.yaml")
 
 
     # ---- Visual feedback ----
