@@ -1,0 +1,7 @@
+Id	Description	Qty	Unit	Designators
+1	Connector, ESP32-C3, 4 pins	1		MCU
+2	Connector, MPU9250, 5 pins	1		SENSOR
+3	Wire, BK	0	m	W
+4	Wire, GN	0	m	W
+5	Wire, RD	0	m	W
+6	Wire, YE	0	m	W

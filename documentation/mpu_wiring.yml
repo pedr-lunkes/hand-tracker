@@ -1,0 +1,42 @@
+connectors:
+  MCU:
+    type: ESP32-C3
+    pincount: 4
+    pinlabels: [3V3, GND, SDA, SCL]
+
+  SENSOR:
+    type: MPU9250
+    pincount: 5
+    pinlabels: [VCC, GND, SCL, SDA, nCS]
+
+cables:
+  W:
+    category: bundle
+    wirecount: 5
+    colors: [RD, BK, YE, GN, RD]
+
+connections:
+  -
+    - MCU: 1
+    - W: 1
+    - SENSOR: 1
+
+  -
+    - MCU: 2
+    - W: 2
+    - SENSOR: 2
+
+  -
+    - MCU: 4
+    - W: 3
+    - SENSOR: 3
+
+  -
+    - MCU: 3
+    - W: 4
+    - SENSOR: 4
+
+  -
+    - MCU: 1
+    - W: 5
+    - SENSOR: 5

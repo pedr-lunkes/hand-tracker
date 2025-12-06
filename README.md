@@ -4,6 +4,9 @@ Este projeto implementa um sistema **AHRS (Attitude and Heading Reference System
 
 O projeto inclui visualização 3D em tempo real e suporta múltiplas fontes de entrada de dados (Serial, BLE e Simulação por Teclado).
 
+## 📷 Demonstração
+![Demonstração BLE](documentation/demonstracaoBLE.mp4)
+
 ## 🚀 Funcionalidades
 
 * **Fusão de Sensores (Sensor Fusion):** Implementação de um EKF para fundir dados brutos e corrigir o *drift* do giroscópio usando acelerômetro e magnetômetro.
@@ -43,9 +46,36 @@ Edite a variável `DATA_SOURCE` no início do arquivo `main.py`:
 # Opções: "BLE", "SERIAL", "KEYBOARD"
 DATA_SOURCE = "KEYBOARD"
 ``` 
-* **KEYBOARD:** Roda a simulação (padrão). Não requer sensor físico, ideal para testar a lógica do EKF e a visualização.
-* **SERIAL:** Requer configuração da porta (ex: `/dev/ttyACM0` no Linux ou `COM3` no Windows) e do `BAUDRATE` (padrão: 115200) definidos no início de `main.py`.
-* **BLE:** Requer o nome do dispositivo Bluetooth (`BLE_DEVICE_NAME`) para conexão com dispositivos BLE compatíveis.
+### KEYBOARD: 
+Roda a simulação (padrão). Não requer sensor físico, ideal para testar a lógica do EKF e a visualização.
+
+#### Controles para Simulação com Teclado
+
+No modo de simulação (`KEYBOARD`), você pode controlar a aceleração e a rotação do cubo utilizando as seguintes teclas:
+
+##### Controle de Aceleração Linear:
+- **W:** Aceleração positiva no eixo X (+X)
+- **S:** Aceleração negativa no eixo X (-X)
+- **A:** Aceleração positiva no eixo Y (+Y, Esquerda)
+- **D:** Aceleração negativa no eixo Y (-Y, Direita)
+- **Q:** Aceleração positiva no eixo Z (+Z, Cima)
+- **E:** Aceleração negativa no eixo Z (-Z, Baixo)
+
+##### Controle de Rotação (Giroscópio):
+- **I:** Aumentar Pitch (+Pitch)
+- **K:** Diminuir Pitch (-Pitch)
+- **L:** Aumentar Roll (+Roll)
+- **J:** Diminuir Roll (-Roll)
+- **O:** Aumentar Yaw (+Yaw)
+- **U:** Diminuir Yaw (-Yaw)
+
+Esses controles permitem simular os dados de entrada do sensor inercial, facilitando o teste do sistema sem a necessidade de hardware físico.
+
+### SERIAL:
+Requer configuração da porta (ex: `/dev/ttyACM0` no Linux ou `COM3` no Windows) e do `BAUDRATE` (padrão: 115200) definidos no início de `main.py`.
+
+### BLE:
+Requer o nome do dispositivo Bluetooth (`BLE_DEVICE_NAME`) para conexão com dispositivos BLE compatíveis.
 
 ## ▶️ Como Rodar
 
@@ -54,3 +84,7 @@ Para iniciar a aplicação e a visualização:
 ```bash
 python main.py
 ```
+
+## Implementação dos sensores
+
+![Conexões dos cabos, utilizando uma esp32-c3 e um MPU9250](documentation/mpu_wiring.png)
