@@ -22,7 +22,7 @@ Certifique-se de ter o **Python 3.8+** instalado.
 1.  **Clone o repositório:**
     ```bash
     git clone https://github.com/pedr-lunkes/hand-tracker.git
-    cd seu-repositorio
+    cd hand-tracker
     ```
 
 2.  **Instale as dependências:**
