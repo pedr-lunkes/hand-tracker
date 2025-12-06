@@ -12,6 +12,9 @@ MPU9250_WE myMPU9250 = MPU9250_WE(MPU9250_ADDR);
 
 void setup() {
   Serial.begin(115200);
+
+
+  Serial.println("Starting");
   Wire.begin();
   if(!myMPU9250.init()){
     Serial.println("MPU9250 does not respond");

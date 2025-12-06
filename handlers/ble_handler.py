@@ -35,9 +35,9 @@ class BleDataHandler:
             decoded_data = data.decode('utf-8').strip()
             parts = decoded_data.split(',')
             
-            if len(parts) == 6:
-                ax, ay, az, gx, gy, gz = map(float, parts)
-                mpu_data = MpuData(ax, ay, az, gx, gy, gz)
+            if len(parts) == 9:
+                ax, ay, az, gx, gy, gz, mx, my, mz = map(float, parts)
+                mpu_data = MpuData(ax, ay, az, gx, gy, gz, mx, my, mz)
                 # Publish to the mediator
                 self.mediator.publish("sensor", mpu_data)
         except Exception as e:

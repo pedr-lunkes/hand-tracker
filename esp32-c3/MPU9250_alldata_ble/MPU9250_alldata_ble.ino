@@ -49,8 +49,7 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Starting setup...");
 
-  // --- MPU69250 Initialization ---
-  Wire.begin(6, 7); // Your I2C pins
+  Wire.begin(); // Your I2C pins
   if(!myMPU9250.init()){
     Serial.println("MPU9250 does not respond");
   }
