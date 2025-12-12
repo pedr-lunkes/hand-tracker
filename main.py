@@ -6,10 +6,16 @@ Main entry point for the orientation tracking application.
 
 import threading
 import sys
+import os
 from mediator import Mediator
-from orientation_estimator import EkfEstimator
+
+# --- Estimators ---
+from ekf_estimator import EkfEstimator
+from madgwick_estimator import MadgwickEstimator
+
 from data_visulalization.visualizer_3d import CubeVisualizer
 from data_visulalization.ekf_plotter import GaussianPlotter
+from data_recorder import Recorder
 
 # --- Import the data handlers ---
 from handlers.serial_handler import MpuSerialHandler
@@ -19,7 +25,7 @@ from handlers.keyboard_handler import KeyboardHandler
 
 # --- CONFIGURATION ---
 # Options: "BLE", "SERIAL", "KEYBOARD"
-DATA_SOURCE = "KEYBOARD"
+DATA_SOURCE = "BLE"
 
 # BLE Settings
 BLE_DEVICE_NAME = "HandTracker-MPU" 
@@ -59,12 +65,12 @@ def main():
     handler.start()
 
 
-    # ---- EKF definition ----
-    # Initializes the EKF estimator
+    # ---- Madgwick definition ----
+    # Initializes the Madgwick estimator
     # This is where the all the calculations for orientation and position estimation will be made
     # You must create a .yaml with the parameters fit for your sensor, in order to get the best results :D
     # The results are published in the "orientation" topic
-    estimator = EkfEstimator(mediator, config_path="ekf_config_keyboard.yaml")
+    estimator = MadgwickEstimator(mediator, config_path="config_real.yaml")
 
 
     # ---- Visual feedback ----
@@ -76,6 +82,12 @@ def main():
 
     # This is a visual simulation of a cube that mirrors the orientation and position calculated
     visualizer = CubeVisualizer(mediator)
+
+    # recorder = Recorder(mediator, topic_name="orientation")
+    # recorder_thread = threading.Thread(target=recorder.run_console, daemon=True)
+    # recorder_thread.start()
+
+    print("Iniciando GUI de Coleta...")
     
 
     print("Starting simulation... (Close plot window to exit)")
@@ -87,11 +99,14 @@ def main():
     except Exception as e:
         print(f"Plotter closed due to an error: {e}")
     finally:
-        # Stop the data handler (clenup for the serial and BLE, and stops its thread)
+        # Stop the data handler 
         handler.stop()
         
-        # Visualizer thread is daemon, will exit.
+        # Stops the recorder
+        # recorder.stop()
+        
         print("Application shut down.")
+        os._exit(0)
 
 
 if __name__ == "__main__":

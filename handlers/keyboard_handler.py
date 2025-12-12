@@ -7,7 +7,7 @@ Recebe comandos de controle via Mediator ("sim_control") e gera dados de sensor 
 import time
 import threading
 import numpy as np
-from handlers.mpu_data import MpuData
+from data_types.mpu_data import MpuData
 from mediator import Mediator
 
 class KeyboardHandler:

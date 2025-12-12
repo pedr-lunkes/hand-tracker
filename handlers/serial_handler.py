@@ -8,7 +8,7 @@ Connects to a serial (USB) port and publishes MPU data to the
 import serial
 import time
 import threading
-from handlers.mpu_data import MpuData
+from data_types.mpu_data import MpuData
 from mediator import Mediator
 
 class MpuSerialHandler:
