@@ -30,7 +30,6 @@ Certifique-se de ter o **Python 3.8+** instalado.
     ```bash
     pip install -r requirements.txt
     ```
-    *Nota: Verifique se a biblioteca `PyYAML` está instalada, pois ela é utilizada para carregar as configurações do EKF.*
 
 ## ⚙️ Configuração
 
