@@ -12,6 +12,8 @@ from mediator import Mediator
 # --- Estimators ---
 from ekf_estimator import EkfEstimator
 from madgwick_estimator import MadgwickEstimator
+from madwick6d_estimator import Madgwick6DEstimator
+from kalman_estimator import KalmanEstimator
 
 from data_visulalization.visualizer_3d import CubeVisualizer
 from data_visulalization.ekf_plotter import GaussianPlotter
@@ -83,9 +85,9 @@ def main():
     # This is a visual simulation of a cube that mirrors the orientation and position calculated
     visualizer = CubeVisualizer(mediator)
 
-    # recorder = Recorder(mediator, topic_name="orientation")
-    # recorder_thread = threading.Thread(target=recorder.run_console, daemon=True)
-    # recorder_thread.start()
+    recorder = Recorder(mediator, topic_name="orientation")
+    recorder_thread = threading.Thread(target=recorder.run_console, daemon=True)
+    recorder_thread.start()
 
     print("Iniciando GUI de Coleta...")
     
