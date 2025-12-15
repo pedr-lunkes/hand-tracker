@@ -46,6 +46,9 @@ class Madgwick6DEstimator:
         self.calibration_frames = dr_conf.get('calibration_frames', 100)
         self.debug_mode = dr_conf.get('debug', False)
 
+        gyro_conf = self.config.get('gyroscope', {})
+        self.gyro_bias = np.array(gyro_conf.get('bias', [0.0, 0.0, 0.0]))
+
         self.pos = np.array([0.0, 0.0, 0.0])
         self.vel = np.array([0.0, 0.0, 0.0])
         
@@ -75,10 +78,14 @@ class Madgwick6DEstimator:
         self.last_time = current_time
         if dt > 0.1: dt = 0.01
 
+        raw_gx = sensor_data.gx - self.gyro_bias[0]
+        raw_gy = sensor_data.gy - self.gyro_bias[1]
+        raw_gz = sensor_data.gz - self.gyro_bias[2]
+
         # Dados brutos (Não usamos magnetômetro aqui)
-        gx = math.radians(sensor_data.gx)
-        gy = math.radians(sensor_data.gy)
-        gz = math.radians(sensor_data.gz)
+        gx = math.radians(raw_gx)
+        gy = math.radians(raw_gy)
+        gz = math.radians(raw_gz)
         ax, ay, az = sensor_data.ax, sensor_data.ay, sensor_data.az
 
         # --- Calibração G ---

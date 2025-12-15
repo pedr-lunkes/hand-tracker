@@ -48,6 +48,9 @@ class MadgwickEstimator:
         self.drag_z = dr_conf['drag']['z']
         self.return_center = dr_conf['return_to_center']
         self.center_speed = dr_conf.get('center_speed', 0.98)
+
+        gyro_conf = self.config.get('gyroscope', {})
+        self.gyro_bias = np.array(gyro_conf.get('bias', [0.0, 0.0, 0.0]))
         
         self.pos = np.array([0.0, 0.0, 0.0])
         self.vel = np.array([0.0, 0.0, 0.0])
@@ -77,9 +80,13 @@ class MadgwickEstimator:
         self.last_time = current_time
         if dt > 0.1: dt = 0.01 
 
-        gx = math.radians(sensor_data.gx)
-        gy = math.radians(sensor_data.gy)
-        gz = math.radians(sensor_data.gz)
+        raw_gx = sensor_data.gx - self.gyro_bias[0]
+        raw_gy = sensor_data.gy - self.gyro_bias[1]
+        raw_gz = sensor_data.gz - self.gyro_bias[2]
+
+        gx = math.radians(raw_gx)
+        gy = math.radians(raw_gy)
+        gz = math.radians(raw_gz)
         ax, ay, az = sensor_data.ax, sensor_data.ay, sensor_data.az
         
         # --- Calibração da Gravidade ---

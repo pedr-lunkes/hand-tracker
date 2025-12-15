@@ -72,7 +72,7 @@ def main():
     # This is where the all the calculations for orientation and position estimation will be made
     # You must create a .yaml with the parameters fit for your sensor, in order to get the best results :D
     # The results are published in the "orientation" topic
-    estimator = MadgwickEstimator(mediator, config_path="config_real.yaml")
+    estimator = Madgwick6DEstimator(mediator, config_path="config_real.yaml")
 
 
     # ---- Visual feedback ----

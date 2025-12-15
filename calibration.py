@@ -23,10 +23,12 @@ from handlers.ble_handler import BleDataHandler
 # --- CONFIGURAÇÃO DA CONEXÃO ---
 # Ajuste conforme seu setup atual
 DATA_SOURCE = "BLE" # ou "BLE"
+
 SERIAL_PORT = '/dev/ttyACM0' # Ajuste para sua porta
 BAUDRATE = 115200
 BLE_DEVICE_NAME = "HandTracker-MPU"
-CONFIG_FILE = "config.yaml"
+CONFIG_FILE = "config_real.yaml"
+
 CALIBRATION_DURATION = 45 # Segundos
 
 class MagnetometerCalibrator:
