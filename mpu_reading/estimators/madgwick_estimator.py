@@ -1,7 +1,7 @@
 """
 madgwick_estimator.py
 
-Filtro Madgwick Original (9-DOF) com Compensação de Distorção Magnética.
+Filtro Madgwick (9-DOF) com Compensação de Distorção Magnética.
 Funde Giroscópio (Rotação), Acelerômetro (Gravidade) e Magnetômetro (Norte).
 """
 

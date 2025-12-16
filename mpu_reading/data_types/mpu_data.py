@@ -1,29 +1,26 @@
 """
 mpu_data.py
 
-This file defines a simple class, MpuData, to store the 6-axis data
-(3-axis accelerometer and 3-axis gyroscope) from the MPU6050 sensor.
+Defini uma classe simples, MpuData, que guarda os dados dos 9-eixos 
+que são lidos pelo MPU9250 (acelerometro de 3 eixos, giroscópido de 3 eixos,
+magnetometro de 3 eixos)
 """
 
 class MpuData:
-    """
-    A simple data container class to hold accelerometer and gyroscope
-    readings from the MPU6050 sensor.
-    """
     def __init__(self, ax, ay, az, gx, gy, gz, mx, my, mz):
         """
-        Initializes the MpuData object with the raw sensor values.
+        Inicializa a classe com os dados brutos do sensor
 
         Args:
-            ax (float): Acceleration along the X-axis (in g's)
-            ay (float): Acceleration along the Y-axis (in g's)
-            az (float): Acceleration along the Z-axis (in g's)
-            gx (float): Gyroscope reading along the X-axis (in degrees/sec)
-            gy (float): Gyroscope reading along the Y-axis (in degrees/sec)
-            gz (float): Gyroscope reading along the Z-axis (in degrees/sec)
-            mx (float): Magnetometer reading along the X-axis (in microteslas)
-            my (float): Magnetometer reading along the Y-axis (in microteslas)
-            mz (float): Magnetometer reading along the Z-axis (in microteslas)
+            ax (float): Aceleração ao longo do eixo X (em g's)
+            ay (float): Aceleração ao longo do eixo Y (em g's)
+            az (float): Aceleração ao longo do eixo Z (em g's)
+            gx (float): Leitura do giroscópio ao longo do eixo X (em graus/segundo)
+            gy (float): Leitura do giroscópio ao longo do eixo Y (em graus/segundo)
+            gz (float): Leitura do giroscópio ao longo do eixo Z (em graus/segundo)
+            mx (float): Leitura do magnetômetro ao longo do eixo X (em microteslas)
+            my (float): Leitura do magnetômetro ao longo do eixo Y (em microteslas)
+            mz (float): Leitura do magnetômetro ao longo do eixo Z (em microteslas)
         """
         self.ax = ax
         self.ay = ay
@@ -38,7 +35,7 @@ class MpuData:
 
     def __str__(self):
         """
-        Returns a string representation of the MpuData object for easy printing.
+        Retorna uma representação em string do objeto MpuData para facilitar a impressão.
         """
         return (f"Accel (g): [x: {self.ax:+.4f}, y: {self.ay:+.4f}, z: {self.az:+.4f}] | "
             f"Gyro (dps): [x: {self.gx:+.4f}, y: {self.gy:+.4f}, z: {self.gz:+.4f}] | "
