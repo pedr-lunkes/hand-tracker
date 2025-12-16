@@ -87,7 +87,7 @@ Para classificar um movimento gravado em CSV (após treinar o modelo com `train_
 
 ```bash
 python predict.py ./caminho/para/arquivo_teste.csv
-
+```
 Assim, o script retornará o movimento detectado e a confiança da predição (ex: SOCO: 90%)
 ## Implementação dos sensores
 
