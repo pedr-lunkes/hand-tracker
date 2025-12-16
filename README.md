@@ -6,7 +6,7 @@ O projeto inclui visualização 3D em tempo real e suporta múltiplas fontes de 
 
 ## 🚀 Funcionalidades
 
-* **Fusão de Sensores (Sensor Fusion):** Implementação de um EKF para fundir dados brutos e corrigir o *drift* do giroscópio usando acelerômetro e magnetômetro.
+* **Fusão de Sensores (Sensor Fusion):** Implementação do algoritmo de Madgwick, para 6-DOF, para fundir dados brutos e corrigir o *drift* do giroscópio usando acelerômetro.
 * **Estimativa de Orientação:** Utiliza quatérnios para evitar *Gimbal Lock*.
 * **Rastreamento de Posição (Dead Reckoning):** Integração dupla da aceleração linear (removendo a gravidade) para estimar a posição relativa no espaço.
 * **Múltiplas Fontes de Dados:**
