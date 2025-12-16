@@ -14,6 +14,7 @@ O projeto inclui visualização 3D em tempo real e suporta múltiplas fontes de 
     * **BLE:** Suporte para Bluetooth Low Energy.
     * **KEYBOARD:** Modo de simulação para testes de lógica sem hardware.
 * **Visualização 3D:** Renderização de um cubo que espelha a orientação estimada em tempo real (baseado em PyGame/OpenGL).
+* **Reconhecimento de Gestos**: Integração de um módulo de Machine Learning para classificação de movimentos.
 
 ## 🛠️ Pré-requisitos e Instalação
 
@@ -81,6 +82,13 @@ Para iniciar a aplicação e a visualização:
 python main.py
 ```
 
+## 🧠 Teste de Classificação (ML)
+Para classificar um movimento gravado em CSV (após treinar o modelo com `train_model.py`), utilize:
+
+```bash
+python predict.py ./caminho/para/arquivo_teste.csv
+
+Assim, o script retornará o movimento detectado e a confiança da predição (ex: SOCO: 90%)
 ## Implementação dos sensores
 
 ![Conexões dos cabos, utilizando uma esp32-c3 e um MPU9250](documentation/mpu_wiring.png)
