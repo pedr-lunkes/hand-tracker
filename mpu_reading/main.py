@@ -10,10 +10,10 @@ import os
 from mediator import Mediator
 
 # --- Estimators ---
-from ekf_estimator import EkfEstimator
-from madgwick_estimator import MadgwickEstimator
-from madwick6d_estimator import Madgwick6DEstimator
-from kalman_estimator import KalmanEstimator
+from estimators.ekf_estimator import EkfEstimator
+from estimators.madgwick_estimator import MadgwickEstimator
+from estimators.madwick6d_estimator import Madgwick6DEstimator
+from estimators.kalman_estimator import KalmanEstimator
 
 from data_visulalization.visualizer_3d import CubeVisualizer
 from data_visulalization.ekf_plotter import GaussianPlotter

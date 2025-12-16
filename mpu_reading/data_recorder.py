@@ -3,14 +3,14 @@ import csv
 import os
 import threading
 from datetime import datetime
-from ekf_estimator import OrientationData
+from data_types.orientation_data import OrientationData
 from mediator import Mediator
 
 class Recorder:
     def __init__(self, mediator: Mediator, topic_name="orientation"):
         self.mediator = mediator
         self.topic_name = topic_name
-        self.output_dir = "training_data_ekf"
+        self.output_dir = "../training_data"
         self.is_recording = False
         self.current_label = "unknown"
         self.buffer = []

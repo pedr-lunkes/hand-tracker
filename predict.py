@@ -1,6 +1,7 @@
 import pandas as pd
 import joblib
 import processamento_dados
+import sys
 
 ARQUIVO_MODELO = "./model/luva.pkl"
 ARQUIVO_COLUNAS = "./model/colunas.pkl"
@@ -35,3 +36,17 @@ def prever_movimento(caminho_csv):
     
     return predicao, probabilidade
 
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Uso: python predict.py <caminho_para_csv>")
+        sys.exit(1)
+
+    caminho_csv = sys.argv[1]
+
+    try:
+        predicao, probabilidade = prever_movimento(caminho_csv)
+        print(f"Predição: {predicao}, Probabilidade: {probabilidade:.2f}")
+    except Exception as e:
+        print(f"Erro ao realizar a predição: {e}")
+        sys.exit(1)
