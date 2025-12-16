@@ -10,6 +10,16 @@ colunas_esperadas = joblib.load(ARQUIVO_COLUNAS)
 
 
 def prever_movimento(caminho_csv):
+    """
+    Utiliza um csv com padrão conhecido e tenta prever qual movimento pre-determinado foi realizado
+
+    Args:
+        caminho_csv (str): O caminho para o arquivo csv
+
+    Returns:
+        str: qual foi o movimento predito
+        float: confiança na predição
+    """
     df_novo = pd.read_csv(caminho_csv)
     
     extrator = processamento_dados.Extrator()

@@ -2,11 +2,21 @@ import pandas
 import numpy as np
 from scipy.stats import skew, kurtosis
 
-
+# Classe utilizada para extrair as features do csv
 class Extrator:
+    # Colunas relevantes do CSV
     COLUNAS_SENSORES = ['qx', 'qy', 'qz', 'qw', 'px', 'py', 'pz']
 
     def extrair_features(self, df):
+        """
+        Extrai as features de um dataframe de formato conhecido
+
+        Args:
+            df (Pandas DataFrame): DataFrame com os dados formatados de forma pre-determinada
+
+        Returns:
+            dados_features (dict): dicionário com as features extraídas
+        """
         dados_features = {}
         
         for col in self.COLUNAS_SENSORES:
