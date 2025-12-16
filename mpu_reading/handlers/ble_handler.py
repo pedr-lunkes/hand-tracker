@@ -1,8 +1,8 @@
 """
 ble_handler.py
 
-Connects to a BLE device and publishes MPU data to the
-"sensor" topic on the mediator.
+Conecta-se a um dispositivo BLE e publica os dados do MPU no
+tópico "sensor" do mediator.
 """
 
 import asyncio
@@ -17,7 +17,7 @@ UART_TX_CHAR_UUID = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
 
 class BleDataHandler:
     """
-    Manages BLE connection and publishes data to the mediator.
+    Gerencia a conexão BLE e publica os dados no mediator.
     """
     
     def __init__(self, device_name, mediator: Mediator):
@@ -30,7 +30,7 @@ class BleDataHandler:
         self.device_found = threading.Event()
 
     def _notification_handler(self, sender, data: bytearray):
-        """Callback for incoming BLE notifications."""
+        """Callback para notificações BLE recebidas."""
         try:
             decoded_data = data.decode('utf-8').strip()
             parts = decoded_data.split(',')
@@ -38,13 +38,13 @@ class BleDataHandler:
             if len(parts) == 9:
                 ax, ay, az, gx, gy, gz, mx, my, mz = map(float, parts)
                 mpu_data = MpuData(ax, ay, az, gx, gy, gz, mx, my, mz)
-                # Publish to the mediator
+                # Publica no mediador
                 self.mediator.publish("sensor", mpu_data)
         except Exception as e:
             print(f"BLE Parse Error: {e}, Data: {data}")
 
     async def _run_ble_loop(self):
-        """The core asyncio loop for scanning, connecting, and listening."""
+        """O loop principal asyncio para escanear, conectar e escutar."""
         print(f"Starting BLE scan for '{self.device_name}'...")
         device = await BleakScanner.find_device_by_name(self.device_name, timeout=10.0)
         
@@ -75,7 +75,7 @@ class BleDataHandler:
                 print("Disconnected.")
 
     def _run_async_wrapper(self):
-        """Sets up and runs the asyncio event loop in this thread."""
+        """Configura e executa o loop de eventos asyncio nesta thread."""
         try:
             self.loop = asyncio.new_event_loop()
             asyncio.set_event_loop(self.loop)
@@ -86,7 +86,7 @@ class BleDataHandler:
             self.is_running = False
 
     def start(self):
-        """Starts the BLE connection thread."""
+        """Inicia a thread de conexão BLE."""
         if self.is_running:
             return
             
@@ -99,7 +99,7 @@ class BleDataHandler:
         self.device_found.wait() 
 
     def stop(self):
-        """Stops the BLE connection thread."""
+        """Encerra a thread de conexão BLE."""
         print("Stopping BLE handler...")
         self.is_running = False
         if self.thread and self.thread.is_alive():
@@ -107,5 +107,5 @@ class BleDataHandler:
         print("BLE handler stopped.")
 
     def is_ready(self):
-        """Checks if the BLE client is connected."""
+        """Verifica se o cliente BLE está conectado."""
         return self.client is not None and self.client.is_connected

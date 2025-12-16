@@ -1,8 +1,8 @@
 """
 serial_handler.py
 
-Connects to a serial (USB) port and publishes MPU data to the
-"sensor" topic on the mediator.
+Conecta-se a uma porta serial (USB) e publica os dados do MPU
+no tópico "sensor" do mediator.
 """
 
 import serial
@@ -13,8 +13,8 @@ from mediator import Mediator
 
 class MpuSerialHandler:
     """
-    Manages serial port connection and data reception in a thread.
-    Publishes MpuData to the mediator.
+    Gerencia a conexão com a porta serial e a recepção de dados em uma thread.
+    Publica MpuData no mediator.
     """
 
     def __init__(self, port, baudrate, mediator: Mediator):
@@ -26,7 +26,7 @@ class MpuSerialHandler:
         self.thread = None
 
     def start(self):
-        """Opens the serial port and starts the read thread."""
+        """Abre a porta serial e inicia a thread de leitura."""
         try:
             self.serial_port = serial.Serial(self.port, self.baudrate, timeout=1.0)
             print(f"Serial port {self.port} opened.")
@@ -42,7 +42,7 @@ class MpuSerialHandler:
             self.serial_port = None
 
     def stop(self):
-        """Stops the read thread and closes the serial port."""
+        """Encerra a thread de leitura e fecha a porta serial."""
         print("Stopping Serial handler...")
         self._running = False
         if self.thread and self.thread.is_alive():
@@ -54,13 +54,13 @@ class MpuSerialHandler:
         print("Serial handler stopped.")
 
     def is_ready(self):
-        """Checks if the serial port is open."""
+        """Verifica se a porta serial está aberta."""
         return self.serial_port is not None and self.serial_port.is_open
 
     def _run_loop(self):
         """
-        Reads data from serial and publishes it.
-        This runs in its own thread.
+        Lê os dados da porta serial e os publica.
+        Este método é executado em sua própria thread.
         """
         print("Serial read thread started.")
         while self._running and self.is_ready():
@@ -74,7 +74,7 @@ class MpuSerialHandler:
                 if len(parts) == 9:
                     ax, ay, az, gx, gy, gz, mx, my, mz = map(float, parts)
                     mpu_data = MpuData(ax, ay, az, gx, gy, gz, mx, my, mz)
-                    # Publish to the mediator
+                    # Publica os dados no mediator
                     self.mediator.publish("sensor", mpu_data)
                 
             except serial.SerialException:

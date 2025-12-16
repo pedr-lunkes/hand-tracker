@@ -1,14 +1,8 @@
 """
 ekf_estimator.py
 
-Implementação de um Filtro de Kalman Estendido (EKF) para fusão de sensores 9-DOF.
-Este estimador combina dados de Giroscópio, Acelerômetro e Magnetômetro para estimar
-a orientação (Quaterniões) e o bias do giroscópio.
-
-Estrutura do Filtro:
-1. Predição (Time Update): Integração da velocidade angular do giroscópio.
-2. Correção 1 (Measurement Update): Vetor Gravidade (Acelerômetro) corrige Pitch/Roll.
-3. Correção 2 (Measurement Update): Vetor Norte (Magnetômetro) corrige Yaw.
+Filtro de Kalman Estendido (EKF) para (-DOF.
+Lógica: Predição (Giroscópio) -> Correção (Acelerômetro) -> Correção (Magnetômetro).
 """
 
 import time
