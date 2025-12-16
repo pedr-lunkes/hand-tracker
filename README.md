@@ -91,4 +91,4 @@ python predict.py ./caminho/para/arquivo_teste.csv
 Assim, o script retornará o movimento detectado e a confiança da predição (ex: SOCO: 90%)
 ## Implementação dos sensores
 
-![Conexões dos cabos, utilizando uma esp32-c3 e um MPU9250](documentation/mpu_wiring.png)
+![Conexões dos cabos, utilizando uma esp32-c3 e um MPU9250](firmware/wiring/mpu_wiring.png)
