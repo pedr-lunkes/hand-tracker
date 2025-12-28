@@ -92,3 +92,6 @@ Assim, o script retornará o movimento detectado e a confiança da predição (e
 ## Implementação dos sensores
 
 ![Conexões dos cabos, utilizando uma esp32-c3 e um MPU9250](firmware/wiring/mpu_wiring.png)
+
+## Video de explicação do projeto
+https://drive.google.com/drive/folders/1YNxYj8c54vRwSsUBmmG0AJA48j65HW0b?usp=drive_link
