@@ -13,12 +13,17 @@ import yaml
 import numpy as np
 import threading
 
-# Imports do seu projeto
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+
+# Caminho para o config na raiz
+CONFIG_FILE = os.path.join(parent_dir, "config_real.yaml")
+
 from mediator import Mediator
 from data_types.mpu_data import MpuData
 from handlers.serial_handler import MpuSerialHandler
 from handlers.ble_handler import BleDataHandler
-# Se precisar simular: from handlers.keyboard_handler import KeyboardHandler
 
 # --- CONFIGURAÇÃO DA CONEXÃO ---
 # Ajuste conforme seu setup atual
